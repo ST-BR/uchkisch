@@ -49,8 +49,7 @@ class _PluginCommandViewState extends State<PluginCommandView> {
         },
         child: GestureDetector(
           onTap: onSelect,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 100),
+          child: Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
               color: isHovered

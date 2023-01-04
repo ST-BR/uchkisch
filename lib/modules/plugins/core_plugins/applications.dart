@@ -15,17 +15,17 @@ class ApplicationsPlugin extends Plugin {
 
   Future<Image?> _getAppIcon(String path) async {
     try {
-      var plistString = await File("$path/Contents/Info.plist").readAsString();
-      var plist = PlistParser().parse(plistString);
-      var iconFileName = plist['CFBundleIconFile'].toString().endsWith('.icns')
-          ? plist['CFBundleIconFile'].toString()
-          : "${plist['CFBundleIconFile'].toString()}.icns";
-      var iconPath = "$path/Contents/Resources/$iconFileName";
+      final plist = await PlistParser().parseFile("$path/Contents/Info.plist");
+      final cfBundleIconFile = plist['CFBundleIconFile'].toString();
+      final iconFileName = cfBundleIconFile.endsWith('.icns')
+          ? cfBundleIconFile
+          : "$cfBundleIconFile.icns";
+      final iconPath = "$path/Contents/Resources/$iconFileName";
+
       return Image.file(File(iconPath));
     } catch (_) {
       return null;
     }
-    // return;
   }
 
   @override

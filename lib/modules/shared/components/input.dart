@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 
 class CommonInput extends StatefulWidget {
   const CommonInput({
     this.placeholder = '',
+    this.value = '',
     this.onChanged,
     this.onKeyEvent,
     super.key,
   });
 
+  final String value;
   final String placeholder;
   final Function(String)? onChanged;
-  final Function(RawKeyEvent)? onKeyEvent;
+  final Function(KeyEvent)? onKeyEvent;
 
   @override
   State<CommonInput> createState() => _CommonInputState();
@@ -19,7 +22,7 @@ class CommonInput extends StatefulWidget {
 
 class _CommonInputState extends State<CommonInput> {
   final controller = TextEditingController(text: '');
-  late final focusNode = FocusNode(onKey: onKey);
+  late final focusNode = FocusNode(onKeyEvent: onKey);
 
   @override
   void initState() {
@@ -31,9 +34,26 @@ class _CommonInputState extends State<CommonInput> {
     super.initState();
   }
 
-  KeyEventResult onKey(FocusNode node, RawKeyEvent event) {
-    if (widget.onKeyEvent != null) {
-      widget.onKeyEvent!(event);
+  @override
+  void didUpdateWidget(covariant CommonInput oldWidget) {
+    if (oldWidget.value != widget.value) {
+      var prevOffset = controller.selection.extentOffset;
+      print(prevOffset);
+
+      controller.text = widget.value;
+      controller.selection = TextSelection.fromPosition(
+        TextPosition(
+            offset: prevOffset <= 0 || widget.value.isEmpty ? 0 : prevOffset),
+      );
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  KeyEventResult onKey(FocusNode node, KeyEvent event) {
+    if (event is KeyDownEvent) {
+      if (widget.onKeyEvent != null) {
+        widget.onKeyEvent!(event);
+      }
     }
     if (event.logicalKey.keyId == KeyCode.arrowUp.keyId) {
       return KeyEventResult.handled;

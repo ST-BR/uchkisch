@@ -18,6 +18,11 @@ class _PluginListState extends State<PluginList> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(width: 1, color: Theme.of(context).backgroundColor),
+        ),
+      ),
       child: Obx(() {
         return ListView(
           children: controller.plugins

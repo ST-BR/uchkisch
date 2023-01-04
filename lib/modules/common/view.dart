@@ -19,25 +19,19 @@ class _CommonScreenState extends State<CommonScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: ClipRRect(
-        clipBehavior: Clip.hardEdge,
-        child: OverflowBox(
-          child: Column(children: [
-            CommonInput(
-              placeholder: "Search",
-              onChanged: (value) async {
-                controller.inputValue.value = value;
-              },
-            ),
-            Container(
-              height: 1,
-              decoration:
-                  BoxDecoration(color: Theme.of(context).backgroundColor),
-            ),
-            Expanded(child: const PluginList())
-          ]),
+      body: Column(children: [
+        Obx(
+          () => CommonInput(
+            placeholder: "Search",
+            onKeyEvent: controller.onKeyEvent,
+            value: controller.inputValue.value,
+            onChanged: (value) async {
+              controller.inputValue.value = value;
+            },
+          ),
         ),
-      ),
+        const Expanded(child: PluginList())
+      ]),
     );
   }
 }

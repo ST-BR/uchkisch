@@ -1,4 +1,4 @@
-package com.example.uchkish
+package com.example.uchkisch
 
 import io.flutter.embedding.android.FlutterActivity
 

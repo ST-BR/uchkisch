@@ -1,4 +1,4 @@
-# uchkish
+# uchkisch
 
 A new Flutter project.
 
